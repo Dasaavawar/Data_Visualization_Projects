@@ -7,7 +7,7 @@ body {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  background-color: slategray;
+  background-color: darkseagreen;
 }
 
 #canvas-container {
@@ -41,7 +41,7 @@ body {
 }
 
 .bar {
-  fill: dodgerblue;
+  fill: deepskyblue;
 }
 
 .bar:hover {
