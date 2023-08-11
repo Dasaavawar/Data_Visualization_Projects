@@ -9,9 +9,9 @@ let widthScale
 let xAxisScale
 let yAxisScale
 
-let width = 940
+let width = 960
 let height = 500
-let padding = 48
+let padding = 44
 
 let quarterFormat = (dateString) => {
   let year = dateString.split('-')[0]
@@ -117,7 +117,7 @@ let drawBars = () => {
   .attr('height', (item) => { return heightScale(item[1]) })
   .attr('x', (item, index) => { return widthScale(index) })
   .attr('y', (item, index) => { return (height - padding) - heightScale(item[1]) })
-  .on('mouseover', (event, item) => {         
+  .on('mouseover', (event, item) => {
     tooltip.transition()
     .style('visibility', 'visible')
     

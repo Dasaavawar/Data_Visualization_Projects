@@ -1,4 +1,4 @@
-let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
+let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
 let xmlhttp = new XMLHttpRequest();
 
 let data 
