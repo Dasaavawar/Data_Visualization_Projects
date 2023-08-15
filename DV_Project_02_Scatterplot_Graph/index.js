@@ -7,7 +7,7 @@ let values
 let xAxisScale
 let yAxisScale
 
-let width = 940
+let width = 980
 let height = 520
 let padding = 48
 
@@ -16,11 +16,11 @@ let svg = d3.select('svg')
 let generateScale = () => {
   xAxisScale = d3.scaleLinear()
   .domain([d3.min(values, (item) => { return item.Year }) - 1, d3.max(values, (item) => { return item.Year }) + 1])
-  .range([padding, width-padding])
+  .range([padding + (padding/2) - (padding/12), width - padding - (padding/2)])
   
   yAxisScale = d3.scaleTime()
   .domain([d3.max(values, (item) => { return new Date(item.Seconds * 1000) }), d3.min(values, (item) => { return new Date(item.Seconds * 1000) })])
-  .range([height - padding, padding])
+  .range([height - padding + (padding/12) - (padding/2), padding])
 }
 
 let drawCanvas = () => {
@@ -38,16 +38,16 @@ let drawAxis = () => {
   svg.append('g')
   .call(xAxis)
   .attr('id', 'x-axis' )
-  .attr('transform', 'translate(0, ' + (height-padding) + ')')
+  .attr('transform', 'translate(0, ' + (height - padding - (padding/2) + (padding/12)) + ')')
 
   svg.append('g')
   .call(yAxis)
   .attr('id', 'y-axis')
-  .attr('transform', 'translate(' + padding + ', 0)' )
+  .attr('transform', 'translate(' + (padding + (padding/2) - (padding/12)) + ', 0)' )
 
   svg.append('text')
   .attr('x', -(padding*3) + (padding/2))
-  .attr('y', padding + (padding/2))
+  .attr('y', (padding/3))
   .style('text-anchor', 'middle')
   .style('font-size', '16px')
   .attr('font-family', 'segoe')
@@ -95,16 +95,22 @@ let drawDots = () => {
     
     tooltip.data(values)
     .attr('data-year', item.Year)
-    .html(`${item.Name}: ${item.Nationality} <br> Year: ${item.Year} Time: ${item.Time} <br> <br> ${item.Doping}`)
-    .style('left', (event.clientX + 16) + 'px')
-    .style('top', (event.clientY) + 'px')
-    .style('background', (item) => {
+    .html(() => {
+      if (item.Doping !== "") {
+        return `${item.Name}: ${item.Nationality} <br> Year: ${item.Year}, Time: ${item.Time} <br> <br> ${item.Doping}`;
+      } else {
+        return `${item.Name}: ${item.Nationality} <br> Year: ${item.Year}, Time: ${item.Time}`;
+      }      
+    })
+    .style('background', () => {
       if (item.Doping !== "") {
         return "rgba(220, 20, 60, 0.8)";
       } else {
         return "rgba(50, 205, 50, 0.8)";
       }
     })
+    .style('left', (event.clientX + 16) + 'px')
+    .style('top', (event.clientY) + 'px');
 
     d3.select(event.currentTarget)
     .attr('class', (item) => {
@@ -127,7 +133,7 @@ let drawDots = () => {
       } else {
         return "circle-clean";
       }
-    });
+    })
   })
 }
 

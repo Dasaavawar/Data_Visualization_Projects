@@ -16,7 +16,7 @@ body {
   flex-direction: column;
   align-items: center;
   height: 610px;
-  width: 920px;
+  width: 940px;
   padding-top: 20px;
   padding-bottom: 0px;
   padding-right: 30px;
@@ -39,8 +39,8 @@ body {
 
 #canvas {
   background-color: white;
-  height: 560px;
-  width: 920px;
+  height: 540px;
+  width: 940px;
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
