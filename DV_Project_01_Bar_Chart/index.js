@@ -6,8 +6,8 @@ let values
 
 let heightScale
 let widthScale
-let xAxisScale
-let yAxisScale
+let xScale
+let yScale
 
 let width = 960
 let height = 500
@@ -47,11 +47,11 @@ let generateScale = () => {
   .domain([0, values.length-1])
   .range([padding, width-padding ])  
 
-  xAxisScale = d3.scaleTime()
+  xScale = d3.scaleTime()
   .domain([d3.min(datesArray), d3.max(datesArray)])
   .range([padding, width-padding])
    
-  yAxisScale = d3.scaleLinear()
+  yScale = d3.scaleLinear()
   .domain([0, d3.max(values, (item) => { return item[1] })])
   .range([height - padding, padding])
 
@@ -62,9 +62,9 @@ let drawCanvas = () => {
   svg.attr('height' , height)
 }
 
-let drawAxis = () => {
-  let xAxis = d3.axisBottom(xAxisScale);
-  let yAxis = d3.axisLeft(yAxisScale)
+let drawAxes = () => {
+  let xAxis = d3.axisBottom(xScale);
+  let yAxis = d3.axisLeft(yScale)
   
   svg.append('g')
   .call(xAxis)
@@ -88,7 +88,7 @@ let drawAxis = () => {
   .attr('y', padding + (padding/2))
   .style('text-anchor', 'middle')
   .style('font-size', '16px')
-  .attr('transform', 'rotate(-90)')
+  .style('transform', 'rotate(-90)')
   .text('Gross Domestic Product')
 }
 
@@ -111,10 +111,10 @@ let drawBars = () => {
   .enter()
   .append('rect')
   .attr('class', 'bar')
+  .attr('height', (item) => { return heightScale(item[1]) })
   .attr('width', (width - (2*padding)) / values.length)
   .attr('data-date', (item) => item[0])
   .attr('data-gdp', (item) => item[1])
-  .attr('height', (item) => { return heightScale(item[1]) })
   .attr('x', (item, index) => { return widthScale(index) })
   .attr('y', (item, index) => { return (height - padding) - heightScale(item[1]) })
   .on('mouseover', (event, item) => {
@@ -129,14 +129,14 @@ let drawBars = () => {
     .style('top', (event.clientY) + 'px')
 
     d3.select(event.currentTarget)
-      .attr('class', 'bar hover');
+    .attr('class', 'bar hover')
   })
   .on('mouseout', (event, item) => {
     tooltip.transition()
-    .style('visibility', 'hidden');
+    .style('visibility', 'hidden')
     
     d3.select(event.currentTarget)
-    .attr('class', 'bar');
+    .attr('class', 'bar')
   })
 }
 
@@ -146,7 +146,7 @@ xmlhttp.onload = () => {
    values = data.data
    generateScale()
    drawCanvas()
+   drawAxes()
    drawBars()
-   drawAxis()
 }
 xmlhttp.send();

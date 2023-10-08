@@ -4,8 +4,8 @@ let xmlhttp = new XMLHttpRequest();
 let data 
 let values
 
-let xAxisScale
-let yAxisScale
+let xScale
+let yScale
 
 let width = 980
 let height = 520
@@ -14,11 +14,11 @@ let padding = 48
 let svg = d3.select('svg')
 
 let generateScale = () => {
-  xAxisScale = d3.scaleLinear()
+  xScale = d3.scaleLinear()
   .domain([d3.min(values, (item) => { return item.Year }) - 1, d3.max(values, (item) => { return item.Year }) + 1])
   .range([padding + (padding/2) - (padding/12), width - padding - (padding/2)])
   
-  yAxisScale = d3.scaleTime()
+  yScale = d3.scaleTime()
   .domain([d3.max(values, (item) => { return new Date(item.Seconds * 1000) }), d3.min(values, (item) => { return new Date(item.Seconds * 1000) })])
   .range([height - padding + (padding/12) - (padding/2), padding])
 }
@@ -28,11 +28,11 @@ let drawCanvas = () => {
   svg.attr('height' , height)
 }
 
-let drawAxis = () => {
-  let xAxis = d3.axisBottom(xAxisScale)
+let drawAxes = () => {
+  let xAxis = d3.axisBottom(xScale)
   .tickFormat(d3.format('d'))
 
-  let yAxis = d3.axisLeft(yAxisScale)
+  let yAxis = d3.axisLeft(yScale)
   .tickFormat(d3.timeFormat('%M:%S'))
   
   svg.append('g')
@@ -68,7 +68,7 @@ let drawDots = () => {
   .style('padding', '6px')
   .style('text-align', 'left')
   .style('font-size', '14px')
-  .attr('font-family', 'segoe')
+  .style('font-family', 'segoe')
 
   svg.selectAll("circle")
   .data(values)
@@ -77,8 +77,8 @@ let drawDots = () => {
   .attr('class', 'dot')
   .attr('data-xvalue', (item) => { return item['Year'] })
   .attr('data-yvalue', (item) => { return new Date(item['Seconds'] * 1000) })
-  .attr('cx', (item) => { return xAxisScale(item['Year']) })
-  .attr('cy', (item) => { return yAxisScale(new Date(item['Seconds'] * 1000)) })
+  .attr('cx', (item) => { return xScale(item['Year']) })
+  .attr('cy', (item) => { return yScale(new Date(item['Seconds'] * 1000)) })
   .attr('r', 7)
   .attr('fill', (item) => {
     if (item['Doping'] !== "") {
@@ -110,7 +110,7 @@ let drawDots = () => {
       }
     })
     .style('left', (event.clientX + 16) + 'px')
-    .style('top', (event.clientY) + 'px');
+    .style('top', (event.clientY) + 'px')
 
     d3.select(event.currentTarget)
     .attr('class', (item) => {
@@ -124,7 +124,7 @@ let drawDots = () => {
   })
   .on('mouseout', (event, item) => {
     tooltip.transition()
-    .style('visibility', 'hidden');
+    .style('visibility', 'hidden')
     
     d3.select(event.currentTarget)
     .attr('class', (item) => {
@@ -143,8 +143,7 @@ xmlhttp.onload = () => {
   values = data
   generateScale()
   drawCanvas()
-  drawAxis()
+  drawAxes()
   drawDots()
 }
 xmlhttp.send();
-
