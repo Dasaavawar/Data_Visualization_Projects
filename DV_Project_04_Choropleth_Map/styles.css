@@ -7,7 +7,7 @@ body {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  background-color: palegoldenrod;
+  background-color:  	darkseagreen;
 }
 
 #canvas-container {
@@ -15,12 +15,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 610px;
-  width: 1240px;
-  padding-top: 20px;
+  height: 620px;
+  width: 1200px;
+  padding-top: 10px;
   padding-bottom: 0px;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 0px;
+  padding-left: 0px;
   box-shadow: 6px 6px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -31,7 +31,8 @@ body {
 
 #title {
   margin-top: 8px;
-  font-size: 24px;
+  font-size: 48px;
+  font-weight: bold;
 }
 
 #description {
@@ -41,14 +42,16 @@ body {
 
 #canvas {
   background-color: white;
-  height: 460px;
-  width: 1200px;
+  height: 600px;
+  width: 960px;
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
   margin: 0;
+  transform: scale(0.85); /* Scale the canvas by a factor of 2 */
+  transform-origin: top left;
 }
 
 #legend {
