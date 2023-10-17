@@ -1,5 +1,5 @@
 let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
-let xmlhttp = new XMLHttpRequest();
+let xmlHttp = new XMLHttpRequest();
 
 let data 
 let values
@@ -140,13 +140,13 @@ let drawBars = () => {
   })
 }
 
-xmlhttp.open ('GET', url, true);
-xmlhttp.onload = () => {
-   data = JSON.parse(xmlhttp.responseText)
+xmlHttp.open ('GET', url, true);
+xmlHttp.onload = () => {
+   data = JSON.parse(xmlHttp.responseText)
    values = data.data
    generateScale()
    drawCanvas()
    drawAxes()
    drawBars()
 }
-xmlhttp.send();
+xmlHttp.send();

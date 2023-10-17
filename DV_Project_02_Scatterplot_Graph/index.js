@@ -1,5 +1,5 @@
 let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
-let xmlhttp = new XMLHttpRequest();
+let xmlHttp = new XMLHttpRequest();
 
 let data 
 let values
@@ -137,13 +137,13 @@ let drawDots = () => {
   })
 }
 
-xmlhttp.open ('GET', url, true);
-xmlhttp.onload = () => {
-  data = JSON.parse(xmlhttp.responseText)
+xmlHttp.open ('GET', url, true);
+xmlHttp.onload = () => {
+  data = JSON.parse(xmlHttp.responseText)
   values = data
   generateScale()
   drawCanvas()
   drawAxes()
   drawDots()
 }
-xmlhttp.send();
+xmlHttp.send();

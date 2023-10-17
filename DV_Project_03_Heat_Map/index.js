@@ -1,5 +1,5 @@
 let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
-let xmlhttp = new XMLHttpRequest();
+let xmlHttp = new XMLHttpRequest();
 
 let baseTemp
 let values = []
@@ -43,7 +43,6 @@ let colorScale = [
 ]
 
 let svg = d3.select('svg')
-let tooltip = d3.select("#tooltip")
 
 let generateScale = () => {
   let minYear = d3.min(values, (item) => {
@@ -73,10 +72,10 @@ let drawAxes = () => {
   let yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%B"))
 
   svg
-    .append("g")
-    .call(xAxis)
-    .attr("id", "x-axis")
-    .attr("transform", "translate(0, " + (height - padding) + ")")
+  .append("g")
+  .call(xAxis)
+  .attr("id", "x-axis")
+  .attr("transform", "translate(0, " + (height - padding) + ")")
 
   svg.append('text')
   .attr('x', width/2)
@@ -87,10 +86,10 @@ let drawAxes = () => {
   .text('Years')
 
   svg
-    .append("g")
-    .call(yAxis)
-    .attr("id", "y-axis")
-    .attr("transform", "translate(" + padding + ", 0)");
+  .append("g")
+  .call(yAxis)
+  .attr("id", "y-axis")
+  .attr("transform", "translate(" + padding + ", 0)");
 }
 
 let drawCells = () => {
@@ -199,9 +198,9 @@ let drawCells = () => {
   })
 }
 
-xmlhttp.open ('GET', url, true);
-xmlhttp.onload = () => {
-  data = JSON.parse(xmlhttp.responseText)
+xmlHttp.open ('GET', url, true);
+xmlHttp.onload = () => {
+  data = JSON.parse(xmlHttp.responseText)
   baseTemp = data.baseTemperature
   values = data.monthlyVariance
   generateScale()
@@ -209,4 +208,4 @@ xmlhttp.onload = () => {
   drawAxes()
   drawCells()  
 }
-xmlhttp.send();
+xmlHttp.send();
