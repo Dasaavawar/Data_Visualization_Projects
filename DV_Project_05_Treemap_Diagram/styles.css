@@ -7,7 +7,7 @@ body {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  background-color:	darkseagreen;
+  background-color:	grey;
 }
 
 #canvas-container {
@@ -15,19 +15,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 620px;
-  width: 1080px;
+  height: 920px;
+  width: 1200px;
   padding-top: 10px;
   padding-bottom: 0px;
   padding-right: 0px;
   padding-left: 0px;
   box-shadow: 6px 6px 24px rgba(0, 0, 0, 0.4);
-}
-
-#container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
 }
 
 #title, #description, #source {
@@ -48,8 +42,8 @@ body {
 
 #source {
   font-size: 16px;
-  top: -110px;
-  left: 370px;
+  top: -400px;
+  left: 425px;
   position: relative;
 }
 
@@ -60,14 +54,13 @@ a {
 #canvas {
   background-color: white;
   height: 600px;
-  width: 1200px;
+  width: 960px;
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 0px;
   margin: 0;
-  position: relative;
   transform: scale(0.85);
   transform-origin: top left;
 }
@@ -76,7 +69,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 60px;
+  top: -500px;
+  left: 900px;
   position: relative;
   height: 280px;
 }
@@ -90,26 +84,6 @@ a {
   font-size: 18px;
   text-anchor: start;
   font-family:'Arial';
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  #canvas {
-    left: 240px;
-  }
-
-  #legend {
-    left: -10px;
-  }
-}
-
-@-moz-document url-prefix() {
-  #canvas {
-    left: 90px;
-  }
-
-  #legend {
-    left: 80px;
-  }
 }
 
 @media (max-width: 1280px) {
