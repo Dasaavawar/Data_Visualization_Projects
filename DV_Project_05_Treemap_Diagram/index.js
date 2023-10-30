@@ -18,43 +18,46 @@ const datasets = {
   },
 };
 
-var urlParams = new URLSearchParams(window.location.search);
-const default_dataset = "videogames";
-const dataset = datasets[urlParams.get("data") || default_dataset];
-// const dataSelector = document.getElementById("data-selector");
+let urlParams = new URLSearchParams(window.location.search);
 
-// dataSelector.innerHTML = '<a>' + DATASETS[0].TITLE + '</a>' + '/' + '<a>' + DATASETS[1].TITLE + '</a>' + '/' + '<a>' + DATASETS[2].TITLE + '</a>';
+let dataset = datasets[urlParams.get("data") || defaultDataset];
+const defaultDataset = "videogames";
 
 document.getElementById("title").innerHTML = dataset.title;
 document.getElementById("description").innerHTML = dataset.description;
 
-// Define body
-var body = d3.select("body");
+const legendOffset = 10;
+const legendRectSize = 15;
+const legendHorizontalSpacing = 150;
+const legendVerticalSpacing = 10;
+const legendTextXOffset = 3;
+const legendTextYOffset = -2;
 
-// Define the div for the tooltip
-var tooltip = body
+function sumBySize(d) {
+  return d.value;
+}
+
+let generateMap = () => {
+  let body = d3.select("body");
+
+  let tooltip = body
   .append("div")
   .attr("class", "tooltip")
   .attr("id", "tooltip")
   .style("opacity", 0);
-
-var svg = d3.select("#canvas"),
+  
+  let svg = d3.select("#canvas"),
   width = +svg.attr("width"),
   height = +svg.attr("height");
 
-var fader = function (color) {
+  let fader = function (color) {
     return d3.interpolateRgb(color, "#fff")(0.2);
   },
   color = d3.scaleOrdinal(d3.schemeCategory20.map(fader));
 
-var treemap = d3.treemap().size([width, height]).paddingInner(1);
+  let treemap = d3.treemap().size([width, height]).paddingInner(1);
 
-d3.json(dataset.url, function (error, data) {
-  if (error) {
-    throw error;
-  }
-
-  var root = d3
+  let root = d3
     .hierarchy(data)
     .eachBefore(function (d) {
       d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name;
@@ -66,7 +69,7 @@ d3.json(dataset.url, function (error, data) {
 
   treemap(root);
 
-  var cell = svg
+  let cell = svg
     .selectAll("g")
     .data(root.leaves())
     .enter()
@@ -101,7 +104,6 @@ d3.json(dataset.url, function (error, data) {
       return color(d.data.category);
     })
     .on("mouseover", function (d) {
-      console.log("mouseover");
       tooltip.style("opacity", 0.9);
       tooltip
         .html(
@@ -136,26 +138,39 @@ d3.json(dataset.url, function (error, data) {
     .text(function (d) {
       return d;
     });
+}
 
-  var categories = root.leaves().map(function (nodes) {
+let generateLegend = () => {
+  let fader = function (color) {
+    return d3.interpolateRgb(color, "#fff")(0.2);
+  },
+  color = d3.scaleOrdinal(d3.schemeCategory20.map(fader));
+
+  let root = d3
+    .hierarchy(data)
+    .eachBefore(function (d) {
+      d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name;
+    })
+    .sum(sumBySize)
+    .sort(function (a, b) {
+      return b.height - a.height || b.value - a.value;
+    });
+
+  let categories = root.leaves().map(function (nodes) {
     return nodes.data.category;
   });
   categories = categories.filter(function (category, index, self) {
     return self.indexOf(category) === index;
   });
-  var legend = d3.select("#legend");
-  var legendWidth = +legend.attr("width");
-  const LEGEND_OFFSET = 10;
-  const LEGEND_RECT_SIZE = 15;
-  const LEGEND_H_SPACING = 150;
-  const LEGEND_V_SPACING = 10;
-  const LEGEND_TEXT_X_OFFSET = 3;
-  const LEGEND_TEXT_Y_OFFSET = -2;
-  var legendElemsPerRow = Math.floor(legendWidth / LEGEND_H_SPACING);
 
-  var legendElem = legend
+  let legend = d3.select("#legend");
+  let legendWidth = +legend.attr("width");
+  
+  let legendElemsPerRow = Math.floor(legendWidth / legendHorizontalSpacing);
+
+  let legendElem = legend
     .append("g")
-    .attr("transform", "translate(60," + LEGEND_OFFSET + ")")
+    .attr("transform", "translate(60," + legendOffset + ")")
     .selectAll("g")
     .data(categories)
     .enter()
@@ -163,18 +178,18 @@ d3.json(dataset.url, function (error, data) {
     .attr("transform", function (d, i) {
       return (
         "translate(" +
-        (i % legendElemsPerRow) * LEGEND_H_SPACING +
+        (i % legendElemsPerRow) * legendHorizontalSpacing +
         "," +
-        (Math.floor(i / legendElemsPerRow) * LEGEND_RECT_SIZE +
-          LEGEND_V_SPACING * Math.floor(i / legendElemsPerRow)) +
+        (Math.floor(i / legendElemsPerRow) * legendRectSize +
+          legendVerticalSpacing * Math.floor(i / legendElemsPerRow)) +
         ")"
       );
     });
 
   legendElem
     .append("rect")
-    .attr("width", LEGEND_RECT_SIZE)
-    .attr("height", LEGEND_RECT_SIZE)
+    .attr("width", legendRectSize)
+    .attr("height", legendRectSize)
     .attr("class", "legend-item")
     .attr("fill", function (d) {
       return color(d);
@@ -182,13 +197,18 @@ d3.json(dataset.url, function (error, data) {
 
   legendElem
     .append("text")
-    .attr("x", LEGEND_RECT_SIZE + LEGEND_TEXT_X_OFFSET)
-    .attr("y", LEGEND_RECT_SIZE + LEGEND_TEXT_Y_OFFSET)
+    .attr("x", legendRectSize + legendTextXOffset)
+    .attr("y", legendRectSize + legendTextYOffset)
     .text(function (d) {
       return d;
     });
-});
-
-function sumBySize(d) {
-  return d.value;
 }
+
+let xmlHttp = new XMLHttpRequest();
+xmlHttp.open ('GET', dataset.url, true);
+xmlHttp.onload = () => {
+  data = JSON.parse(xmlHttp.responseText)
+  generateMap()
+  generateLegend()
+}
+xmlHttp.send();
