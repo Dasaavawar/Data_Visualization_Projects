@@ -42,7 +42,7 @@ let colorScale = [
   "#a50026",
 ]
 
-let svg = d3.select('svg')
+let svg = d3.select("svg")
 
 let generateScale = () => {
   let minYear = d3.min(values, (item) => {
@@ -63,8 +63,8 @@ let generateScale = () => {
 }
 
 let drawCanvas = () => {
-  svg.attr('width', width)
-  svg.attr('height' , height)
+  svg.attr("width", width)
+  svg.attr("height" , height)
 }
 
 let drawAxes = () => {
@@ -77,13 +77,13 @@ let drawAxes = () => {
   .attr("id", "x-axis")
   .attr("transform", "translate(0, " + (height - padding) + ")")
 
-  svg.append('text')
-  .attr('x', width/2)
-  .attr('y', height - padding + padding/2)
-  .style('text-anchor', 'end')
-  .style('font-size', '12px')
-  .style('font-family', 'Arial')
-  .text('Years')
+  svg.append("text")
+  .attr("x", width/2)
+  .attr("y", height - padding + padding/2)
+  .style("text-anchor", "end")
+  .style("font-size", "12px")
+  .style("font-family", "Arial")
+  .text("Years")
 
   svg
   .append("g")
@@ -94,23 +94,23 @@ let drawAxes = () => {
 
 let drawCells = () => {
   let tooltip = d3
-  .select('body')
-  .append('div')
-  .attr('id', 'tooltip')
-  .style('visibility', 'hidden')
-  .style('position', 'absolute')
-  .style('width', 'auto')
-  .style('height', 'auto')
-  .style('box-shadow', '2px 2px 4px rgba(0, 0, 0, 0.8)')
-  .style('border-radius', '2.5px')
-  .style('padding', '6px')
-  .style('text-align', 'center')
+  .select("body")
+  .append("div")
+  .attr("id", "tooltip")
+  .style("visibility", "hidden")
+  .style("position", "absolute")
+  .style("width", "auto")
+  .style("height", "auto")
+  .style("box-shadow", "2px 2px 4px rgba(0, 0, 0, 0.8)")
+  .style("border-radius", "2.5px")
+  .style("padding", "6px")
+  .style("text-align", "center")
   .style("vertical-align", "middle")
-  .style('font-size', '14px')
-  .style('background', 'rgba(0, 0, 0, 0.8)')
-  .style('color', 'rgba(255, 255, 255, 1)')
-  .style('font-family', 'Arial')
-  .style('font-weight', 'lighter')
+  .style("font-size", "14px")
+  .style("background", "rgba(0, 0, 0, 0.8)")
+  .style("color", "rgba(255, 255, 255, 1)")
+  .style("font-family", "Arial")
+  .style("font-weight", "lighter")
   
   svg.selectAll("rect")
   .data(values)
@@ -173,11 +173,11 @@ let drawCells = () => {
   })
   .on("mouseover", (event, item) => {
     tooltip.transition()
-    .style('visibility', 'visible')
+    .style("visibility", "visible")
     .attr("data-year", item["year"])
 
     d3.select(event.currentTarget)
-    .attr('class', 'cell hover')
+    .attr("class", "cell hover")
 
     tooltip
     .html(() => {
@@ -185,20 +185,20 @@ let drawCells = () => {
       let variance = item.variance >= 0 ? String(`+${item.variance.toFixed(1)}`) : String(item.variance.toFixed(1))
       return `${item["year"]} - ${monthNames[item["month"] - 1]} <br> ${temperature.toFixed(1)}°C <br> ${variance}°C`;
     })
-    .style('width', '120px')
-    .style('left', (event.clientX - 60) + 'px')
-    .style('top', (event.clientY - 80) + 'px')
+    .style("width", "120px")
+    .style("left", (event.clientX - 60) + "px")
+    .style("top", (event.clientY - 80) + "px")
     
   })
   .on("mouseout", (event, item) => {
     tooltip.transition().style("visibility", "hidden")
 
     d3.select(event.currentTarget)
-    .attr('class', 'cell')
+    .attr("class", "cell")
   })
 }
 
-xmlHttp.open ('GET', url, true);
+xmlHttp.open ("GET", url, true);
 xmlHttp.onload = () => {
   data = JSON.parse(xmlHttp.responseText)
   baseTemp = data.baseTemperature
